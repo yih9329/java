@@ -1,12 +1,15 @@
 package com.lmp.mylib.controller;
 
-import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import com.lmp.mylib.Admin;
+import com.lmp.mylib.Member;
 import com.lmp.mylib.service.AdminService;
 
 @Controller
@@ -17,18 +20,51 @@ public class AdminController {
 	AdminService service;
 	
 	@RequestMapping(value="/login", method=RequestMethod.POST)
-	public String adminLogin(HttpServletRequest request) {
-		String adminId = request.getParameter("adminId");
-		String adminPw = request.getParameter("adminPw");
-		
-		boolean res = service.isAdmin(adminId, adminPw);				
+	public String adminLogin(Admin admin, HttpSession session) {
+		session.setAttribute("admin", admin);  				
+		boolean res = service.isAdmin(admin.getAdminId(), admin.getAdminPw());				
 		if(res) 
-			return "adminLoginSuccess";						//관리자 계정이 맞다면
+			return "adminLoginSuccess";						
 		else
 			return "adminLoginFail";
 	}
 	
-	public String regMember() {
-		return null;
+	@RequestMapping(value="/logout")
+	public String adminLogout(HttpSession session) {
+		session.invalidate();
+		return "redirect:/resources/main.html";
 	}
+	
+	@RequestMapping(value="/goToMngMntPage")
+	public String goToMngMntPage(HttpSession session) {
+		Admin admin = (Admin) session.getAttribute("admin");
+		if(admin == null)
+			return "adminLoginRequest";
+		
+		return "adminLoginSuccess";
+	}
+	
+	@RequestMapping(value="/register", method=RequestMethod.POST)
+	public String registerMember(Member member, HttpSession session, HttpServletResponse response) {
+		
+		return "testjsp";
+	/*	Admin admin = (Admin) session.getAttribute("admin");
+		if(admin == null) {
+			return "adminLoginRequest";
+		}
+		
+		System.out.println("���� : " + member.getMemAge());
+		
+//		if(member.getMemName() == null || member.getMemSex() == null || member.getMemAge() == null || member.getMemPassword() == null)
+	//		return "redirect:/resources/regMember.html";
+		
+		int res = service.registerMember(member);
+		if(res == 1) 									
+			return "memberRegisterSuccess";
+		else
+			return "memberRegisterFail";
+*/
+	}
+	
+	
 }

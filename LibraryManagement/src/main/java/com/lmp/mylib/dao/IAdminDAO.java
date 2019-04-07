@@ -1,6 +1,8 @@
 package com.lmp.mylib.dao;
 
-public interface IAdminDAO {
+import com.lmp.mylib.Member;
 
+public interface IAdminDAO {
 	boolean select(String reqId, String reqPw);
+	int insert(Member member);
 }

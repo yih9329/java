@@ -1,10 +1,20 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
+<meta charset="MS949">
+<title>회원 등록</title>
 </head>
 <body>
-
+	<form action="/mylib/admin/register" method="post">
+		이     름 : <input type="text" name="memName"><br>
+		성     별 : <input type="radio" name="memSex" value="male">남 <input type="radio" name="memSex" value="female">여<br>
+		나     이 : <input type="text" name="memAge" required><br>
+		연 락 처 : <input type="text" name="memPhone.ph_1" size="3">-
+			    <input type="text" name="memPhone.ph_2" size="4">-
+			    <input type="text" name="memPhone.ph_3" size="4"><br>
+		주     소 : <input type="text" name="memeAddress"><br>
+		비밀번호 : <input type="password" name="memPassword"><br>
+		<input type="submit" value="완료">
+	</form>
 </body>
 </html>

@@ -3,6 +3,7 @@ package com.lmp.mylib.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.lmp.mylib.Member;
 import com.lmp.mylib.dao.AdminDAO;
 
 @Service
@@ -14,5 +15,10 @@ public class AdminService implements IAdminService{
 	@Override
 	public boolean isAdmin(String adminId, String adminPw) {
 		return adminDAO.select(adminId, adminPw);
+	}
+
+	@Override
+	public int registerMember(Member member) {
+		return adminDAO.insert(member);
 	}
 }

@@ -1,17 +1,22 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=MS949"
+    pageEncoding="MS949"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>íšŒì› ê´€ë¦¬ íŽ˜ì´ì§€</title>
+<meta http-equiv="Content-Type" content="text/html; charset=MS949">
+<title>È¸¿ø °ü¸® ÆäÀÌÁö</title>
 </head>
 <body>
-	<h2>ì—…ë¬´ì„ íƒ</h2>
-	<input type="button" value="íšŒì› ë“±ë¡" onClick="location.href='/mylib/resources/regMember.html'"><br>
-	<input type="button" value="íšŒì› ì‚­ì œ" onClick="location.href='/mylib/resources/delMember.html'"><br>
-	<input type="button" value="íšŒì› ì •ë³´ ìˆ˜ì •" onClick="location.href='/mylib/resources/modMember.html'"><br>
-	<input type="button" value="ë“±ë¡ íšŒì› ëª©ë¡" onClick="location.href='/mylib/resources/showMember.html'"><br>
+	<p>°ü¸®ÀÚ : ${admin.adminId} &nbsp;
+		<form action="/mylib/admin/logout">
+			<input type="submit" value="·Î±×¾Æ¿ô">
+		</form>
+	<h2>¾÷¹«¼±ÅÃ</h2>
+	<input type="button" value="È¸¿ø µî·Ï" onClick="location.href='/mylib/resources/regMember.html'"><br>
+	<input type="button" value="È¸¿ø »èÁ¦" onClick="location.href='/mylib/resources/delMember.html'"><br>
+	<input type="button" value="È¸¿ø Á¤º¸ ¼öÁ¤" onClick="location.href='/mylib/resources/modMember.html'"><br>
+	<input type="button" value="µî·Ï È¸¿ø ¸ñ·Ï" onClick="location.href='/mylib/resources/showMember.html'"><br>
+	
 	
 </body>
 </html>
