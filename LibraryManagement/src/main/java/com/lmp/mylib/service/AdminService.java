@@ -21,4 +21,9 @@ public class AdminService implements IAdminService{
 	public int registerMember(Member member) {
 		return adminDAO.insert(member);
 	}
+
+	@Override
+	public int deleteMember(String memName, String memPw) {
+		return adminDAO.delete(memName, memPw);
+	}
 }

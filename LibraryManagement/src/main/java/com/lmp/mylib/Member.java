@@ -1,5 +1,7 @@
 package com.lmp.mylib;
 
+import java.io.UnsupportedEncodingException;
+
 public class Member {
 	private String memName;
 	private String memSex;
@@ -12,7 +14,11 @@ public class Member {
 		return memName;
 	}
 	public void setMemName(String memName) {
-		this.memName = memName;
+		try {
+			this.memName = new String(memName.getBytes("8859_1"), "UTF-8");
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}
 	}
 	public String getMemSex() {
 		return memSex;
@@ -36,7 +42,11 @@ public class Member {
 		return memAddress;
 	}
 	public void setMemAddress(String memAddress) {
-		this.memAddress = memAddress;
+		try {
+			this.memAddress = new String(memAddress.getBytes("8859_1"), "UTF-8");
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}
 	}
 	public String getMemPassword() {
 		return memPassword;

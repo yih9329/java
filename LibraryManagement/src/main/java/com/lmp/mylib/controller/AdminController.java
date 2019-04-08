@@ -1,6 +1,8 @@
 package com.lmp.mylib.controller;
 
-import javax.servlet.http.HttpServletResponse;
+import java.io.UnsupportedEncodingException;
+
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,16 +17,16 @@ import com.lmp.mylib.service.AdminService;
 @Controller
 @RequestMapping("/admin")
 public class AdminController {
-	
 	@Autowired
 	AdminService service;
 	
 	@RequestMapping(value="/login", method=RequestMethod.POST)
-	public String adminLogin(Admin admin, HttpSession session) {
-		session.setAttribute("admin", admin);  				
+	public String adminLogin(Admin admin, HttpSession session) {  				
 		boolean res = service.isAdmin(admin.getAdminId(), admin.getAdminPw());				
-		if(res) 
-			return "adminLoginSuccess";						
+		if(res) {
+			session.setAttribute("admin", admin);
+			return "adminLoginSuccess";			
+		}
 		else
 			return "adminLoginFail";
 	}
@@ -45,26 +47,38 @@ public class AdminController {
 	}
 	
 	@RequestMapping(value="/register", method=RequestMethod.POST)
-	public String registerMember(Member member, HttpSession session, HttpServletResponse response) {
-		
-		return "testjsp";
-	/*	Admin admin = (Admin) session.getAttribute("admin");
+	public String registerMember(Member member, HttpSession session) {
+	
+		System.out.println(member.getMemAddress());
+		Admin admin = (Admin) session.getAttribute("admin");
 		if(admin == null) {
 			return "adminLoginRequest";
 		}
-		
-		System.out.println("³ªÀÌ : " + member.getMemAge());
-		
-//		if(member.getMemName() == null || member.getMemSex() == null || member.getMemAge() == null || member.getMemPassword() == null)
-	//		return "redirect:/resources/regMember.html";
 		
 		int res = service.registerMember(member);
 		if(res == 1) 									
 			return "memberRegisterSuccess";
 		else
 			return "memberRegisterFail";
-*/
 	}
 	
-	
+	@RequestMapping(value="/delete", method=RequestMethod.POST)
+	public String deleteMember(HttpServletRequest request) {
+		HttpSession session = request.getSession();
+		Admin admin = (Admin) session.getAttribute("admin");
+		if(admin == null)
+			return "adminLoginRequest";
+		try {
+			request.setCharacterEncoding("UTF-8");
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}
+		String memName = request.getParameter("memName");
+		String memPw = request.getParameter("memPassword");
+		int res = service.deleteMember(memName, memPw);
+		if(res == 1)
+			return "memberDeleteSuccess";
+		else
+			return "memberDeleteFail";
+	}
 }
