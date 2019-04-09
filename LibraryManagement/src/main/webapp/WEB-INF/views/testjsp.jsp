@@ -8,7 +8,7 @@
 </head>
 <body>
 	
-	${member.memName}<br>
+	테스트 페이지<br>
 	
 </body>
 </html>

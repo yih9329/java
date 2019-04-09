@@ -1,17 +1,21 @@
 package com.lmp.mylib.controller;
 
 import java.io.UnsupportedEncodingException;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.lmp.mylib.Admin;
-import com.lmp.mylib.Member;
+import com.lmp.mylib.MemberDB;
+import com.lmp.mylib.MemberWeb;
+import com.lmp.mylib.Seat;
 import com.lmp.mylib.service.AdminService;
 
 @Controller
@@ -46,8 +50,47 @@ public class AdminController {
 		return "adminLoginSuccess";
 	}
 	
+	@RequestMapping("/showSeatInfo")
+	public String showSeatInfo(Model model, HttpSession session) {
+		Admin admin = (Admin) session.getAttribute("admin");
+		if(admin == null)
+			return "adminLoginRequest";
+		
+		List<Seat> seat = service.showSeatInfo();
+		model.addAttribute("seatList", seat);
+		return "seatInfo";
+	}
+	
+	@RequestMapping("/showMemInfo")
+	public String showMemInfo(Model model, HttpServletRequest request) {								// 커맨드 객체를 사용하여 view로 넘겨줄땐 왜 되지 않을까?
+		HttpSession session = request.getSession();
+		Admin admin = (Admin) session.getAttribute("admin");
+		if(admin == null)
+			return "adminLoginRequest";
+		
+		try {
+			request.setCharacterEncoding("UTF-8");
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}
+		
+		int seatNum = Integer.parseInt(request.getParameter("seatNum"));
+		String memName = request.getParameter("memName");
+		String memPw = request.getParameter("memPw");
+		MemberDB member = service.getMemInfo(memName, memPw);
+		model.addAttribute("seatNum", seatNum);
+		model.addAttribute("memName", member.getMemName());
+		model.addAttribute("memSex", member.getMemSex());
+		model.addAttribute("memAge", member.getMemAge());
+		model.addAttribute("memPhone", member.getMemPhone());
+		model.addAttribute("memAddress", member.getMemAddress());
+		model.addAttribute("memPassword", member.getMemPassword());
+		
+		return "memberInfo";
+	}
+	
 	@RequestMapping(value="/register", method=RequestMethod.POST)
-	public String registerMember(Member member, HttpSession session) {
+	public String registerMember(MemberWeb member, HttpSession session) {
 	
 		System.out.println(member.getMemAddress());
 		Admin admin = (Admin) session.getAttribute("admin");

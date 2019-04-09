@@ -12,6 +12,9 @@
 			<input type="submit" value="로그아웃">
 		</form>
 	<h2>업무선택</h2>
+	<form action="showSeatInfo">
+		<input type="submit" value="좌석 정보"><br>
+	</form>
 	<input type="button" value="회원 등록" onClick="location.href='/mylib/resources/regMember.html'"><br>
 	<input type="button" value="회원 삭제" onClick="location.href='/mylib/resources/delMember.html'"><br>
 	<input type="button" value="회원 정보 수정" onClick="location.href='/mylib/resources/modMember.html'"><br>

@@ -15,5 +15,6 @@
 	<form action="/mylib/admin/logout">
 		<input type="submit" value="로그아웃"> 
 	</form>
+	
 </body>
 </html>
