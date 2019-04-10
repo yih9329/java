@@ -8,8 +8,10 @@ import com.lmp.mylib.Seat;
 
 public interface IAdminService {
 	boolean isAdmin(String adminId, String adminPw);
-	int registerMember(MemberWeb member);
-	int deleteMember(String memName, String memPw);
+	int registerMember(MemberWeb member, int seatNum);
+	int deleteMember(int seatNum);
+	int modifyMemInfo(MemberWeb member, String curMemPw);
 	List<Seat> showSeatInfo();
-	MemberDB getMemInfo(String memName, String memPw);
+	MemberDB getMemInfo(int seatNum);
+	
 }

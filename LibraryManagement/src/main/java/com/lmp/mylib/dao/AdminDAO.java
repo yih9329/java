@@ -57,7 +57,7 @@ public class AdminDAO implements IAdminDAO {
 	}
 
 	@Override
-	public int insert(MemberWeb member) {
+	public int insertMember(MemberWeb member) {
 		String driver = "oracle.jdbc.driver.OracleDriver";
 		String url = "jdbc:oracle:thin:@localhost:1521:xe";
 		String id = "scott";
@@ -93,7 +93,7 @@ public class AdminDAO implements IAdminDAO {
 	}
 
 	@Override
-	public int delete(String memName, String memPw) {
+	public int registerSeat(MemberWeb member, int seatNum) {
 		String driver = "oracle.jdbc.driver.OracleDriver";
 		String url = "jdbc:oracle:thin:@localhost:1521:xe";
 		String id = "scott";
@@ -106,10 +106,43 @@ public class AdminDAO implements IAdminDAO {
 		try {
 			Class.forName(driver);
 			con = DriverManager.getConnection(url, id, pw);
-			String sql = "DELETE FROM member WHERE mem_name = ? and mem_password = ?";
+			String sql = "UPDATE seat SET mem_name=?, mem_password=? WHERE s_num=?";
 			pstmt = con.prepareStatement(sql);
-			pstmt.setString(1, memName);
-			pstmt.setString(2, memPw);
+			pstmt.setString(1, member.getMemName());
+			pstmt.setString(2, member.getMemPassword());
+			pstmt.setInt(3, seatNum);
+			res = pstmt.executeUpdate();
+		} catch (ClassNotFoundException | SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if(pstmt != null) 	pstmt.close();
+				if(con != null) 	con.close();
+			} catch (Exception e2) {
+				e2.printStackTrace();
+			}
+		}
+		return res;
+	}
+	
+	@Override
+	public int deleteMember(int seatNum) {
+		String driver = "oracle.jdbc.driver.OracleDriver";
+		String url = "jdbc:oracle:thin:@localhost:1521:xe";
+		String id = "scott";
+		String pw = "tiger";
+		
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		int res = 0;
+		
+		try {
+			Class.forName(driver);
+			con = DriverManager.getConnection(url, id, pw);
+			String sql = "DELETE FROM member WHERE mem_name=(SELECT mem_name FROM seat WHERE s_num=?) AND mem_password=(SELECT mem_password FROM seat WHERE s_num=?)";
+			pstmt = con.prepareStatement(sql);
+			pstmt.setInt(1, seatNum);
+			pstmt.setInt(2, seatNum);
 			res = pstmt.executeUpdate();
 		} catch (ClassNotFoundException | SQLException e) {
 			e.printStackTrace();
@@ -170,7 +203,7 @@ public class AdminDAO implements IAdminDAO {
 	}
 
 	@Override
-	public MemberDB getMemInfo(String memName, String memPw) {
+	public MemberDB getMemInfo(int seatNum) {
 		String driver = "oracle.jdbc.driver.OracleDriver";
 		String url = "jdbc:oracle:thin:@localhost:1521:xe";
 		String id = "scott";
@@ -184,10 +217,10 @@ public class AdminDAO implements IAdminDAO {
 		try {
 			Class.forName(driver);
 			con = DriverManager.getConnection(url, id, pw);
-			String sql = "SELECT * FROM member WHERE mem_name=? and mem_password=?";
+			String sql = "SELECT * FROM member WHERE mem_name=(SELECT mem_name FROM seat WHERE s_num=?) AND mem_password=(SELECT mem_password FROM seat WHERE s_num=?)";
 			pstmt = con.prepareStatement(sql);
-			pstmt.setString(1, memName);
-			pstmt.setString(2, memPw);
+			pstmt.setInt(1, seatNum);
+			pstmt.setInt(2, seatNum);
 			res = pstmt.executeQuery();
 			
 			while(res.next()) {
@@ -218,4 +251,44 @@ public class AdminDAO implements IAdminDAO {
 			}
 		return m;
 	}
+
+	
+	@Override
+	public int updateMemInfo(MemberWeb member, String curMemPw) {
+		String driver = "oracle.jdbc.driver.OracleDriver";
+		String url = "jdbc:oracle:thin:@localhost:1521:xe";
+		String id = "scott";
+		String pw = "tiger";
+		
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		int res = 0;
+		
+		try {
+			Class.forName(driver);
+			con = DriverManager.getConnection(url, id, pw);
+			String sql = "UPDATE member SET mem_sex=?, mem_age=?, mem_address=?, mem_phone=?, mem_password=? WHERE mem_name=? AND mem_password=?";
+			pstmt = con.prepareStatement(sql);
+			pstmt.setString(1, member.getMemSex());
+			pstmt.setInt(2, member.getMemAge());
+			pstmt.setString(3, member.getMemAddress());
+			pstmt.setString(4, member.getMemPhone().toString());
+			pstmt.setString(5, member.getMemPassword());
+			pstmt.setString(6, member.getMemName());
+			pstmt.setString(7, curMemPw);
+			res = pstmt.executeUpdate();
+		} catch (ClassNotFoundException | SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if(pstmt != null)	pstmt.close();
+				if(con != null)		con.close();
+			} catch (Exception e2) {
+				e2.printStackTrace();
+			}
+		}
+		return res;
+	}
+
+
 }

@@ -1,3 +1,4 @@
+<%@page import="java.net.URLEncoder"%>
 <%@page import="java.util.List"%>
 <%@page import="com.lmp.mylib.Seat"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
@@ -20,11 +21,11 @@
 			Seat s = seat.get(i);
 			int seatNum = s.getSeatNum();
 			String memName = s.getMemName();
-			String memPw = s.getMemPassword();
 			if(memName != null){
+				String memPw = s.getMemPassword();
 	%>
 		<tr>
-			<td><a href="/mylib/admin/showMemInfo?seatNum=<%=seatNum%>&memName=<%=memName%>&memPw=<%=memPw%>"><%=seatNum%></a></td>
+			<td><a href="/mylib/admin/showMemInfo?seatNum=<%=seatNum%>"><%=seatNum%></a></td>
 			<td><%=memName%></td>
 		</tr>
 	<%		
@@ -32,7 +33,7 @@
 			else {
 	%>
 		<tr>
-			<td><a href="/mylib/admin/goToMngMntPage"><%=seatNum%></a></td>
+			<td><a href="/mylib/resources/regMember.jsp?seatNum=<%=seatNum%>"><%=seatNum%></a></td>
 			<td>사용가능</td>
 		</tr>	
 	<%

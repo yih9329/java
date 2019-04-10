@@ -12,21 +12,24 @@
 		String memName = (String) request.getAttribute("memName");
 		String memSex = (String) request.getAttribute("memSex");
 		int memAge = (int) request.getAttribute("memAge");
-		String memPhone = (String) request.getAttribute("memPhone").toString();
+		String[] memPhone = request.getAttribute("memPhone").toString().split("-");
 		String memAddress = (String) request.getAttribute("memAddress");
 		String memPassword = (String) request.getAttribute("memPassword");
 	%>
 	<h3>회원 정보</h3>
-	좌석번호 : <%=seatNum%><br>
-	이     름 : <%=memName%><br>
-	성     별 : <%=memSex%><br> 
-	나     이 : <%=memAge%><br>
-	주     소 : <%=memAddress%><br>
-	연 락 처 : <%=memPhone%><br>
-	비밀번호 : <%=memPassword%><br>
-	
-	
-	
-	
+	<form action="/mylib/admin/modify" method="post">
+		좌석번호 : <%=seatNum%><br>
+		이 름 : <input type="text" name="memName" value="<%=memName%>" readonly="readonly" style="width:60px"><br>
+		성 별 : <input type="text" name="memSex" value="<%=memSex%>" style="width:20px"><br>
+		나 이 : <input type="text" name="memAge" value="<%=memAge%>" style="width:20px"><br>
+		주 소 : <input type="text" name="memAddress" value="<%=memAddress%>" style="width:500px"><br>
+		연락처 : <input type="text" name="memPhone.ph_1" value="<%=memPhone[0]%>" style="width:50px">-
+			   <input type="text" name="memPhone.ph_2" value="<%=memPhone[1]%>" style="width:50px">-
+			   <input type="text" name="memPhone.ph_3" value="<%=memPhone[2]%>" style="width:50px"><br>
+		현재 비밀번호 : <input type="password" name="curPassword" value="<%=memPassword%>" readonly="readonly" style="width:80px"><br>
+		변경 비밀번호 : <input type="password" name="memPassword" value="<%=memPassword%>" style="width:80px"><br>
+		<input type="submit" value="수정">&nbsp;
+	</form>
+	<input type="button" value="삭제" onClick="location.href='/mylib/admin/delete?seatNum=<%=seatNum%>'">
 </body>
 </html>

@@ -8,8 +8,10 @@ import com.lmp.mylib.Seat;
 
 public interface IAdminDAO {
 	boolean getAdminId(String reqId, String reqPw);
-	int insert(MemberWeb member);
-	int delete(String memName, String memPw);
+	int insertMember(MemberWeb member);
+	int registerSeat(MemberWeb member, int seatNum);
+	int deleteMember(int seatNum);
+	int updateMemInfo(MemberWeb member, String curMemPw);
 	List<Seat> getSeatInfo();
-	MemberDB getMemInfo(String memName, String memPw);
+	MemberDB getMemInfo(int seatNum);
 }

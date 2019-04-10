@@ -24,7 +24,11 @@ public class MemberWeb {
 		return memSex;
 	}
 	public void setMemSex(String memSex) {
-		this.memSex = memSex;
+		try {
+			this.memSex = new String(memSex.getBytes("8859_1"), "UTF-8");
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}
 	}
 	public int getMemAge() {
 		return memAge;

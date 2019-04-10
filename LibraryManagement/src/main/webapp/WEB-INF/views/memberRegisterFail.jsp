@@ -8,7 +8,7 @@
 </head>
 <body>
 	<h2>회원 등록에 실패하였습니다.</h2>
-	<input type="button" value="다시시도" onClick="location.href='/mylib/resources/regMember.html'"> &nbsp;
+	<input type="button" value="다시시도" onClick="location.href='/mylib/admin/showSeatInfo'"> &nbsp;
 	<form action="/mylib/admin/goToMngMntPage">
 		<input type="submit" value="회원 관리 창으로">
 	</form>

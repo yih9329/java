@@ -63,7 +63,7 @@ public class AdminController {
 	
 	@RequestMapping("/showMemInfo")
 	public String showMemInfo(Model model, HttpServletRequest request) {								// 커맨드 객체를 사용하여 view로 넘겨줄땐 왜 되지 않을까?
-		HttpSession session = request.getSession();
+		HttpSession session = request.getSession();						
 		Admin admin = (Admin) session.getAttribute("admin");
 		if(admin == null)
 			return "adminLoginRequest";
@@ -75,9 +75,7 @@ public class AdminController {
 		}
 		
 		int seatNum = Integer.parseInt(request.getParameter("seatNum"));
-		String memName = request.getParameter("memName");
-		String memPw = request.getParameter("memPw");
-		MemberDB member = service.getMemInfo(memName, memPw);
+		MemberDB member = service.getMemInfo(seatNum);
 		model.addAttribute("seatNum", seatNum);
 		model.addAttribute("memName", member.getMemName());
 		model.addAttribute("memSex", member.getMemSex());
@@ -85,27 +83,26 @@ public class AdminController {
 		model.addAttribute("memPhone", member.getMemPhone());
 		model.addAttribute("memAddress", member.getMemAddress());
 		model.addAttribute("memPassword", member.getMemPassword());
-		
 		return "memberInfo";
 	}
 	
 	@RequestMapping(value="/register", method=RequestMethod.POST)
-	public String registerMember(MemberWeb member, HttpSession session) {
-	
-		System.out.println(member.getMemAddress());
+	public String registerMember(MemberWeb member, HttpServletRequest request) {
+		HttpSession session = request.getSession();
 		Admin admin = (Admin) session.getAttribute("admin");
 		if(admin == null) {
 			return "adminLoginRequest";
 		}
 		
-		int res = service.registerMember(member);
-		if(res == 1) 									
+		int seatNum = Integer.parseInt(request.getParameter("seatNum"));
+		int res = service.registerMember(member, seatNum);
+		if(res == 1)
 			return "memberRegisterSuccess";
 		else
 			return "memberRegisterFail";
 	}
 	
-	@RequestMapping(value="/delete", method=RequestMethod.POST)
+	@RequestMapping(value="/delete")
 	public String deleteMember(HttpServletRequest request) {
 		HttpSession session = request.getSession();
 		Admin admin = (Admin) session.getAttribute("admin");
@@ -116,12 +113,34 @@ public class AdminController {
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
 		}
-		String memName = request.getParameter("memName");
-		String memPw = request.getParameter("memPassword");
-		int res = service.deleteMember(memName, memPw);
+		
+		int seatNum = Integer.parseInt(request.getParameter("seatNum"));
+		int res = service.deleteMember(seatNum);
 		if(res == 1)
 			return "memberDeleteSuccess";
 		else
 			return "memberDeleteFail";
+	}
+	
+	@RequestMapping(value="/modify", method=RequestMethod.POST)
+	public String modifyMemInfo(MemberWeb member, HttpServletRequest request) {
+		HttpSession session = request.getSession();
+		Admin admin = (Admin) session.getAttribute("admin");
+		if(admin == null)
+			return "adminLoginRequest";
+		
+		try {
+			request.setCharacterEncoding("UTF-8");
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}
+		
+		String curMemPw = request.getParameter("curPassword");
+		int res = service.modifyMemInfo(member, curMemPw);
+		
+		if(res == 1)
+			return "memberInfoModifySuccess";
+		else
+			return "memberInfoModifyFail";
 	}
 }

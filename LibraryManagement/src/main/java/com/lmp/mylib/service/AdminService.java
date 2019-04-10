@@ -22,13 +22,16 @@ public class AdminService implements IAdminService{
 	}
 
 	@Override
-	public int registerMember(MemberWeb member) {
-		return adminDAO.insert(member);
+	public int registerMember(MemberWeb member, int seatNum) {
+		int res = adminDAO.insertMember(member);
+		if(res == 1) 
+			res = adminDAO.registerSeat(member, seatNum);
+		return res;
 	}
 
 	@Override
-	public int deleteMember(String memName, String memPw) {
-		return adminDAO.delete(memName, memPw);
+	public int deleteMember(int seatNum) {
+		return adminDAO.deleteMember(seatNum);
 	}
 
 	@Override
@@ -37,7 +40,12 @@ public class AdminService implements IAdminService{
 	}
 
 	@Override
-	public MemberDB getMemInfo(String memName, String memPw) {
-		return adminDAO.getMemInfo(memName, memPw);
+	public MemberDB getMemInfo(int seatNum) {
+		return adminDAO.getMemInfo(seatNum);
+	}
+
+	@Override
+	public int modifyMemInfo(MemberWeb member, String curMemPw) {
+		return adminDAO.updateMemInfo(member, curMemPw);
 	}
 }

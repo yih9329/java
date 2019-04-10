@@ -7,8 +7,8 @@
 <title>회원 삭제 실패</title>
 </head>
 <body>
-	<h2>해당 회원이 존재하지 않습니다.</h2>
-	<input type="button" value="다시 시도" onClick="location.href='/mylib/resources/delMember.html'">&nbsp;
+	<h2>회원 삭제가 실패하였습니다.</h2>
+	<input type="button" value="다시 시도" onClick="location.href='/mylib/admin/showSeatInfo'">&nbsp;
 	<form action="/mylib/admin/goToMngMntPage">
 		<input type="submit" value="회원 관리 창으로">&nbsp;
 	</form>
