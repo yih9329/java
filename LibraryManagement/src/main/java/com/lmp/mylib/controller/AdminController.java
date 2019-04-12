@@ -29,10 +29,10 @@ public class AdminController {
 		boolean res = service.isAdmin(admin.getAdminId(), admin.getAdminPw());				
 		if(res) {
 			session.setAttribute("admin", admin);
-			return "adminLoginSuccess";			
+			return "admin/adminLoginSuccess";			
 		}
 		else
-			return "adminLoginFail";
+			return "admin/adminLoginFail";
 	}
 	
 	@RequestMapping(value="/logout")
@@ -45,20 +45,20 @@ public class AdminController {
 	public String goToMngMntPage(HttpSession session) {
 		Admin admin = (Admin) session.getAttribute("admin");
 		if(admin == null)
-			return "adminLoginRequest";
+			return "admin/adminLoginRequest";
 		
-		return "adminLoginSuccess";
+		return "admin/adminLoginSuccess";
 	}
 	
 	@RequestMapping("/showSeatInfo")
 	public String showSeatInfo(Model model, HttpSession session) {
 		Admin admin = (Admin) session.getAttribute("admin");
 		if(admin == null)
-			return "adminLoginRequest";
+			return "admin/adminLoginRequest";
 		
 		List<Seat> seat = service.showSeatInfo();
 		model.addAttribute("seatList", seat);
-		return "seatInfo";
+		return "admin/seatInfo";
 	}
 	
 	@RequestMapping("/showMemInfo")
@@ -66,7 +66,7 @@ public class AdminController {
 		HttpSession session = request.getSession();						
 		Admin admin = (Admin) session.getAttribute("admin");
 		if(admin == null)
-			return "adminLoginRequest";
+			return "admin/adminLoginRequest";
 		
 		try {
 			request.setCharacterEncoding("UTF-8");
@@ -83,7 +83,7 @@ public class AdminController {
 		model.addAttribute("memPhone", member.getMemPhone());
 		model.addAttribute("memAddress", member.getMemAddress());
 		model.addAttribute("memPassword", member.getMemPassword());
-		return "memberInfo";
+		return "admin/memberInfo";
 	}
 	
 	@RequestMapping(value="/register", method=RequestMethod.POST)
@@ -91,15 +91,15 @@ public class AdminController {
 		HttpSession session = request.getSession();
 		Admin admin = (Admin) session.getAttribute("admin");
 		if(admin == null) {
-			return "adminLoginRequest";
+			return "admin/adminLoginRequest";
 		}
 		
 		int seatNum = Integer.parseInt(request.getParameter("seatNum"));
 		int res = service.registerMember(member, seatNum);
 		if(res == 1)
-			return "memberRegisterSuccess";
+			return "admin/memberRegisterSuccess";
 		else
-			return "memberRegisterFail";
+			return "admin/memberRegisterFail";
 	}
 	
 	@RequestMapping(value="/delete")
@@ -107,7 +107,7 @@ public class AdminController {
 		HttpSession session = request.getSession();
 		Admin admin = (Admin) session.getAttribute("admin");
 		if(admin == null)
-			return "adminLoginRequest";
+			return "admin/adminLoginRequest";
 		try {
 			request.setCharacterEncoding("UTF-8");
 		} catch (UnsupportedEncodingException e) {
@@ -117,9 +117,9 @@ public class AdminController {
 		int seatNum = Integer.parseInt(request.getParameter("seatNum"));
 		int res = service.deleteMember(seatNum);
 		if(res == 1)
-			return "memberDeleteSuccess";
+			return "admin/memberDeleteSuccess";
 		else
-			return "memberDeleteFail";
+			return "admin/memberDeleteFail";
 	}
 	
 	@RequestMapping(value="/modify", method=RequestMethod.POST)
@@ -127,7 +127,7 @@ public class AdminController {
 		HttpSession session = request.getSession();
 		Admin admin = (Admin) session.getAttribute("admin");
 		if(admin == null)
-			return "adminLoginRequest";
+			return "admin/adminLoginRequest";
 		
 		try {
 			request.setCharacterEncoding("UTF-8");
@@ -139,8 +139,8 @@ public class AdminController {
 		int res = service.modifyMemInfo(member, curMemPw);
 		
 		if(res == 1)
-			return "memberInfoModifySuccess";
+			return "admin/memberInfoModifySuccess";
 		else
-			return "memberInfoModifyFail";
+			return "admin/memberInfoModifyFail";
 	}
 }

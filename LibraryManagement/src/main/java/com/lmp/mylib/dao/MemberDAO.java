@@ -6,9 +6,10 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
-@Service
+@Component
 public class MemberDAO implements IMemberDAO {
 	
 	@Override
@@ -48,30 +49,44 @@ public class MemberDAO implements IMemberDAO {
 		
 		return res;
 	}
-
-	@Override
-	public void memberSelect() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void memberUpdate() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void memberDelete() {
-		// TODO Auto-generated method stub
-		
-	}
-
 	
 	@Override
-	public boolean isMember(String reqId, String reqPw) {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean getMemberId(String memName, String memPw) {
+		String driver = "oracle.jdbc.driver.OracleDriver";
+		String url = "jdbc:oracle:thin:@localhost:1521:xe";
+		String id = "scott";
+		String pw = "tiger";
+		
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet res = null;
+		boolean ret = false;
+		
+		try {
+			Class.forName(driver);
+			con = DriverManager.getConnection(url, id, pw);
+			String sql = "SELECT * FROM member WHERE mem_name=? AND mem_password=?";
+			pstmt = con.prepareStatement(sql);
+			pstmt.setString(1, memName);
+			pstmt.setString(2, memPw);
+			res = pstmt.executeQuery();
+			
+			if(res.next())
+				ret = true;
+			
+		} catch (ClassNotFoundException | SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if(res != null)		res.close();
+				if(pstmt != null)	pstmt.close();
+				if(con != null)		con.close();
+			} catch (Exception e2) {
+				e2.printStackTrace();
+			}
+		}
+		
+		return ret;
 	}
 	
 }

@@ -1,8 +1,6 @@
 package com.lmp.mylib.service;
 
 public interface IMemberService {
-	void memberRegister();
-	void memberSearch();
-	void memberDelete();
+	boolean memberLogin(String memName, String memPw);
 	
 }
