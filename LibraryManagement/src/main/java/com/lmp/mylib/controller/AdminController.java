@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import com.lmp.mylib.Admin;
 import com.lmp.mylib.MemberDB;
 import com.lmp.mylib.MemberWeb;
+import com.lmp.mylib.RTime;
+import com.lmp.mylib.Ride;
 import com.lmp.mylib.Seat;
 import com.lmp.mylib.service.AdminService;
 
@@ -142,5 +144,18 @@ public class AdminController {
 			return "admin/memberInfoModifySuccess";
 		else
 			return "admin/memberInfoModifyFail";
+	}
+	
+	@RequestMapping("/showRideInfo")
+	public String showRideInfo(Model model, HttpSession session) {
+		Admin admin = (Admin) session.getAttribute("admin");
+		if(admin == null)
+			return "admin/adminLoginRequest";
+		List<Ride> rideInfo = service.showRideInfo();
+		List<RTime> rtimeInfo = service.showRTimeInfo();
+		
+		model.addAttribute("rideInfo", rideInfo);
+		model.addAttribute("rtimeInfo", rtimeInfo);
+		return "admin/rideInfo";
 	}
 }

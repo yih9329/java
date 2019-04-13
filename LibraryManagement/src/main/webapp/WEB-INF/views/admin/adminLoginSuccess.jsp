@@ -13,7 +13,10 @@
 		</form>
 	<h2>업무선택</h2>
 	<form action="/mylib/admin/showSeatInfo">
-		<input type="submit" value="좌석 정보"><br>
+		<input type="submit" value="좌석 정보">
+	</form>
+	<form action="/mylib/admin/showRideInfo">
+		<input type="submit" value="차량 지원">
 	</form>
 	
 </body>

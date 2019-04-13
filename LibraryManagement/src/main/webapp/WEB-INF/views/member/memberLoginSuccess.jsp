@@ -13,7 +13,9 @@
 	<!--<p>회원명 : <%--=memName--%></p> -->
 	
 	<p>회원명 : ${memName}</p>
-	
+	<form action="">
+			
+	</form>
 	
 </body>
 </html>

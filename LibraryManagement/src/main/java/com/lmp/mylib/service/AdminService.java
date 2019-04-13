@@ -7,6 +7,8 @@ import org.springframework.stereotype.Service;
 
 import com.lmp.mylib.MemberDB;
 import com.lmp.mylib.MemberWeb;
+import com.lmp.mylib.RTime;
+import com.lmp.mylib.Ride;
 import com.lmp.mylib.Seat;
 import com.lmp.mylib.dao.AdminDAO;
 
@@ -47,5 +49,15 @@ public class AdminService implements IAdminService{
 	@Override
 	public int modifyMemInfo(MemberWeb member, String curMemPw) {
 		return adminDAO.updateMemInfo(member, curMemPw);
+	}
+
+	@Override
+	public List<Ride> showRideInfo() {
+		return adminDAO.getRideInfo();
+	}
+
+	@Override
+	public List<RTime> showRTimeInfo() {
+		return adminDAO.getRTimeInfo();
 	}
 }

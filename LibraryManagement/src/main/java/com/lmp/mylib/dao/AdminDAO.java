@@ -13,6 +13,8 @@ import org.springframework.stereotype.Service;
 import com.lmp.mylib.MemberDB;
 import com.lmp.mylib.MemberPhone;
 import com.lmp.mylib.MemberWeb;
+import com.lmp.mylib.RTime;
+import com.lmp.mylib.Ride;
 import com.lmp.mylib.Seat;
 
 @Service
@@ -157,7 +159,6 @@ public class AdminDAO implements IAdminDAO {
 		return res;
 	}
 
-	
 	@Override
 	public List<Seat> getSeatInfo() {
 		String driver = "oracle.jdbc.driver.OracleDriver";
@@ -251,7 +252,6 @@ public class AdminDAO implements IAdminDAO {
 			}
 		return m;
 	}
-
 	
 	@Override
 	public int updateMemInfo(MemberWeb member, String curMemPw) {
@@ -290,5 +290,97 @@ public class AdminDAO implements IAdminDAO {
 		return res;
 	}
 
+	
+	@Override
+	public List<Ride> getRideInfo() {
+		String driver = "oracle.jdbc.driver.OracleDriver";
+		String url = "jdbc:oracle:thin:@localhost:1521:xe";
+		String id = "scott";
+		String pw = "tiger";
+		
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet res = null;
+		ResultSet rs = null;
+		List<Ride> list = new ArrayList<>();
+		
+		try {
+			Class.forName(driver);
+			con = DriverManager.getConnection(url, id, pw);
+			String sql = "SELECT * FROM ride";
+			pstmt = con.prepareStatement(sql);
+			res = pstmt.executeQuery();
+			
+			while(res.next()) {
+				Ride r = new Ride();
+				String memName = null;
+				int seatNum = res.getInt(1);
+				String posTime = res.getString(2);
+				sql = "SELECT mem_name FROM seat WHERE s_num=?";
+				pstmt = con.prepareStatement(sql);
+				pstmt.setInt(1, seatNum);
+				rs = pstmt.executeQuery();
+				while(rs.next())
+					memName = rs.getString(1);
+				r.setMemName(memName);
+				r.setPosTime(posTime);
+				list.add(r);
+			}
+			
+		} catch (ClassNotFoundException | SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if(rs != null)		rs.close();
+				if(res != null)		res.close();
+				if(pstmt != null)	pstmt.close();
+				if(con != null) 	con.close();
+			} catch (Exception e2) {
+				e2.printStackTrace();
+			}
+		}
+
+		return list;
+	}
+
+	
+	@Override
+	public List<RTime> getRTimeInfo() {
+		String driver = "oracle.jdbc.driver.OracleDriver";
+		String url = "jdbc:oracle:thin:@localhost:1521:xe";
+		String id = "scott";
+		String pw = "tiger";
+		
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet res = null;
+		List<RTime> list = new ArrayList<>();
+		
+		try {
+			Class.forName(driver);
+			con = DriverManager.getConnection(url, id, pw);
+			String sql = "SELECT * FROM rtime";
+			pstmt = con.prepareStatement(sql);
+			res = pstmt.executeQuery();
+			
+			while(res.next()) {
+				RTime rt = new RTime();
+				String posTime = res.getString(1);
+				rt.setPosTime(posTime);
+				list.add(rt);
+			}
+		} catch (ClassNotFoundException | SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if(res != null)		res.close();
+				if(pstmt != null)	pstmt.close();
+				if(con != null)		con.close();
+			} catch (Exception e2) {
+				e2.printStackTrace();
+			}
+		}
+		return list;
+	}
 
 }
