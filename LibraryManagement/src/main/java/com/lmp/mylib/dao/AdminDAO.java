@@ -289,7 +289,6 @@ public class AdminDAO implements IAdminDAO {
 		}
 		return res;
 	}
-
 	
 	@Override
 	public List<Ride> getRideInfo() {
@@ -314,16 +313,20 @@ public class AdminDAO implements IAdminDAO {
 			while(res.next()) {
 				Ride r = new Ride();
 				String memName = null;
+				String memAddress = null;
 				int seatNum = res.getInt(1);
 				String posTime = res.getString(2);
-				sql = "SELECT mem_name FROM seat WHERE s_num=?";
+				sql = "SELECT mem_name, mem_address FROM seat WHERE s_num=?";
 				pstmt = con.prepareStatement(sql);
 				pstmt.setInt(1, seatNum);
 				rs = pstmt.executeQuery();
-				while(rs.next())
+				while(rs.next()) {
 					memName = rs.getString(1);
+					memAddress = rs.getString(2);
+				}
 				r.setMemName(memName);
 				r.setPosTime(posTime);
+				r.setMemAddress(memAddress);
 				list.add(r);
 			}
 			
@@ -343,7 +346,6 @@ public class AdminDAO implements IAdminDAO {
 		return list;
 	}
 
-	
 	@Override
 	public List<RTime> getRTimeInfo() {
 		String driver = "oracle.jdbc.driver.OracleDriver";
@@ -381,6 +383,71 @@ public class AdminDAO implements IAdminDAO {
 			}
 		}
 		return list;
+	}
+
+	
+	@Override
+	public int deleteRTime() {
+		String driver = "oracle.jdbc.driver.OracleDriver";
+		String url = "jdbc:oracle:thin:@localhost:1521:xe";
+		String id = "scott";
+		String pw = "tiger";
+		
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		int res = 0;
+		
+		try {
+			Class.forName(driver);
+			con = DriverManager.getConnection(url, id, pw);
+			String sql = "DELETE FROM rtime";
+			pstmt = con.prepareStatement(sql);
+			res = pstmt.executeUpdate();
+		} catch (ClassNotFoundException | SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if(pstmt != null)	pstmt.close();
+				if(con != null) 	con.close();
+			} catch (Exception e2) {
+				e2.printStackTrace();
+			}
+		}
+		return res;
+	}
+
+	
+	@Override
+	public int setRTime(String[] rtime) {
+		String driver = "oracle.jdbc.driver.OracleDriver";
+		String url = "jdbc:oracle:thin:@localhost:1521:xe";
+		String id = "scott";
+		String pw = "tiger";
+		
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		int res = 0;
+		
+		try {
+			Class.forName(driver);
+			con = DriverManager.getConnection(url, id, pw);
+			String sql = "INSERT INTO rtime VALUES(?)";
+			pstmt = con.prepareStatement(sql);
+			for(String s: rtime) {
+				pstmt.setString(1, s);
+				res += pstmt.executeUpdate();
+			}
+		} catch (ClassNotFoundException | SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if(pstmt != null) 	pstmt.close();
+				if(con != null)		con.close();
+			} catch (Exception e2) {
+				e2.printStackTrace();
+			}
+		}
+		return res;
 	}
 
 }

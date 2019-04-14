@@ -17,4 +17,6 @@ public interface IAdminService {
 	MemberDB getMemInfo(int seatNum);
 	List<Ride> showRideInfo();
 	List<RTime> showRTimeInfo();
+	int deleteRTime();
+	int setRTime(String[] rtime);
 }

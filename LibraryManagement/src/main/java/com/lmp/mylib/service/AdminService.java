@@ -60,4 +60,14 @@ public class AdminService implements IAdminService{
 	public List<RTime> showRTimeInfo() {
 		return adminDAO.getRTimeInfo();
 	}
+
+	@Override
+	public int deleteRTime() {
+		return adminDAO.deleteRTime();
+	}
+
+	@Override
+	public int setRTime(String[] rtime) {
+		return adminDAO.setRTime(rtime);
+	}
 }

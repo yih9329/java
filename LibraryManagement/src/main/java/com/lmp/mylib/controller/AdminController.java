@@ -156,6 +156,27 @@ public class AdminController {
 		
 		model.addAttribute("rideInfo", rideInfo);
 		model.addAttribute("rtimeInfo", rtimeInfo);
-		return "admin/rideInfo";
+		return "admin/ride/rideInfo";
+	}
+	
+	@RequestMapping("/setRideTime")
+	public String setRideTime(HttpServletRequest request) {
+		HttpSession session = request.getSession();
+		Admin admin = (Admin) session.getAttribute("admin");
+		if(admin == null)
+			return "admin/adminLoginRequest";
+		
+		String[] rtime = request.getParameterValues("rtime");
+		int res = service.deleteRTime();
+		if(res == 0)
+			return "admin/ride/rtimeDeleteFail";
+		if(rtime.length != 0) {
+			res = service.setRTime(rtime);
+			if(res != rtime.length) {
+				service.deleteRTime();
+				return "admin/ride/rtimeSetFail";
+			}
+		}
+		return "admin/ride/rtimeSetSuccess";
 	}
 }

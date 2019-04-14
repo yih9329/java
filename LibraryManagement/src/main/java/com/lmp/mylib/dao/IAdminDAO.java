@@ -18,4 +18,6 @@ public interface IAdminDAO {
 	MemberDB getMemInfo(int seatNum);
 	List<Ride> getRideInfo();
 	List<RTime> getRTimeInfo();
+	int deleteRTime();
+	int setRTime(String[] rtime);
 }

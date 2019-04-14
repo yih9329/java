@@ -16,8 +16,7 @@
 		<input type="submit" value="좌석 정보">
 	</form>
 	<form action="/mylib/admin/showRideInfo">
-		<input type="submit" value="차량 지원">
+		<input type="submit" value="차량 지원 현황">
 	</form>
-	
 </body>
 </html>
