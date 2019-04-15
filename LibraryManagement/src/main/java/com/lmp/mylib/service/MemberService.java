@@ -1,5 +1,7 @@
 package com.lmp.mylib.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,5 +16,9 @@ public class MemberService implements IMemberService {
 	public boolean memberLogin(String memName, String memPw) {
 		return memberDAO.getMemberId(memName, memPw);
 	}
-	
+
+	@Override
+	public List<String> showRideTime() {
+		return memberDAO.getRTime();
+	}
 }

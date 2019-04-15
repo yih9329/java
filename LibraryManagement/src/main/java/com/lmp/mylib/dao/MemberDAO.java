@@ -5,9 +5,10 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.LinkedList;
+import java.util.List;
 
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
 
 @Component
 public class MemberDAO implements IMemberDAO {
@@ -88,5 +89,42 @@ public class MemberDAO implements IMemberDAO {
 		
 		return ret;
 	}
+
 	
+	@Override
+	public List<String> getRTime() {
+		String driver = "oracle.jdbc.driver.OracleDriver";
+		String url = "jdbc:oracle:thin:@localhost:1521:xe";
+		String id = "scott";
+		String pw = "tiger";
+		
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet res = null;
+		List<String> list = new LinkedList<>();
+		
+		try {
+			Class.forName(driver);
+			con = DriverManager.getConnection(url, id, pw);
+			String sql = "SELECT * FROM rtime";
+			pstmt = con.prepareStatement(sql);
+			res = pstmt.executeQuery();
+			
+			while(res.next()) {
+				String time = res.getString(1);
+				list.add(time);
+			}
+		} catch (ClassNotFoundException | SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if(res != null)		res.close();
+				if(pstmt != null) 	pstmt.close();
+				if(con != null)		con.close();
+			} catch (Exception e2) {
+				e2.printStackTrace();
+			}
+		}
+		return list;
+	}
 }

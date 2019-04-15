@@ -13,9 +13,7 @@
 	<!--<p>회원명 : <%--=memName--%></p> -->
 	
 	<p>회원명 : ${memName}</p>
-	<form action="">
-			
-	</form>
-	
+	<input type="button" value="차량 신청" onClick="location.href='/mylib/resources/showRideTime'">&nbsp;
+	<input type="button" value="메시지 보내기">
 </body>
 </html>
