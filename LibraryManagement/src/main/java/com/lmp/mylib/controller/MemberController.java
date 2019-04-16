@@ -12,6 +12,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import com.lmp.mylib.RTime;
 import com.lmp.mylib.service.MemberService;
 
 @Controller
@@ -62,7 +63,7 @@ public class MemberController {
 		if(memName == null)
 			return "member/memberLoginRequest";
 		
-		List<String> rtime = service.showRideTime();
+		List<RTime> rtime = service.showRideTime();
 		model.addAttribute("rtime", rtime);
 		return "member/showRideTime";
 	}

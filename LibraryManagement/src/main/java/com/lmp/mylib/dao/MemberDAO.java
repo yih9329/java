@@ -10,6 +10,8 @@ import java.util.List;
 
 import org.springframework.stereotype.Component;
 
+import com.lmp.mylib.RTime;
+
 @Component
 public class MemberDAO implements IMemberDAO {
 	
@@ -89,10 +91,9 @@ public class MemberDAO implements IMemberDAO {
 		
 		return ret;
 	}
-
 	
 	@Override
-	public List<String> getRTime() {
+	public List<RTime> getRTime() {
 		String driver = "oracle.jdbc.driver.OracleDriver";
 		String url = "jdbc:oracle:thin:@localhost:1521:xe";
 		String id = "scott";
@@ -101,7 +102,7 @@ public class MemberDAO implements IMemberDAO {
 		Connection con = null;
 		PreparedStatement pstmt = null;
 		ResultSet res = null;
-		List<String> list = new LinkedList<>();
+		List<RTime> list = new LinkedList<>();
 		
 		try {
 			Class.forName(driver);
@@ -111,8 +112,12 @@ public class MemberDAO implements IMemberDAO {
 			res = pstmt.executeQuery();
 			
 			while(res.next()) {
+				RTime rt = new RTime();
 				String time = res.getString(1);
-				list.add(time);
+				int maxNum = res.getInt(2);
+				rt.setPosTime(time);
+				rt.setMaxNum(maxNum);
+				list.add(rt);
 			}
 		} catch (ClassNotFoundException | SQLException e) {
 			e.printStackTrace();

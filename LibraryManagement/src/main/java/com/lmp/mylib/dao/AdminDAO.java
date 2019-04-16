@@ -316,9 +316,10 @@ public class AdminDAO implements IAdminDAO {
 				String memAddress = null;
 				int seatNum = res.getInt(1);
 				String posTime = res.getString(2);
-				sql = "SELECT mem_name, mem_address FROM seat WHERE s_num=?";
+				sql = "SELECT mem_name, mem_address FROM member WHERE mem_name=(SELECT mem_name FROM seat WHERE s_num=?) AND mem_password=(SELECT mem_password FROM seat WHERE s_num=?)";
 				pstmt = con.prepareStatement(sql);
 				pstmt.setInt(1, seatNum);
+				pstmt.setInt(2, seatNum);
 				rs = pstmt.executeQuery();
 				while(rs.next()) {
 					memName = rs.getString(1);
@@ -368,7 +369,9 @@ public class AdminDAO implements IAdminDAO {
 			while(res.next()) {
 				RTime rt = new RTime();
 				String posTime = res.getString(1);
+				int maxNum = res.getInt(2);
 				rt.setPosTime(posTime);
+				rt.setMaxNum(maxNum);
 				list.add(rt);
 			}
 		} catch (ClassNotFoundException | SQLException e) {
@@ -384,7 +387,6 @@ public class AdminDAO implements IAdminDAO {
 		}
 		return list;
 	}
-
 	
 	@Override
 	public int deleteRTime() {
@@ -416,9 +418,8 @@ public class AdminDAO implements IAdminDAO {
 		return res;
 	}
 
-	
 	@Override
-	public int setRTime(String[] rtime) {
+	public int setRTime(String[] rtime, int maxNum) {
 		String driver = "oracle.jdbc.driver.OracleDriver";
 		String url = "jdbc:oracle:thin:@localhost:1521:xe";
 		String id = "scott";
@@ -431,10 +432,11 @@ public class AdminDAO implements IAdminDAO {
 		try {
 			Class.forName(driver);
 			con = DriverManager.getConnection(url, id, pw);
-			String sql = "INSERT INTO rtime VALUES(?)";
-			pstmt = con.prepareStatement(sql);
+			String sql = "INSERT INTO rtime VALUES(?, ?)";
 			for(String s: rtime) {
+				pstmt = con.prepareStatement(sql);
 				pstmt.setString(1, s);
+				pstmt.setInt(2, maxNum);
 				res += pstmt.executeUpdate();
 			}
 		} catch (ClassNotFoundException | SQLException e) {

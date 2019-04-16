@@ -67,7 +67,7 @@ public class AdminService implements IAdminService{
 	}
 
 	@Override
-	public int setRTime(String[] rtime) {
-		return adminDAO.setRTime(rtime);
+	public int setRTime(String[] rtime, int maxNum) {
+		return adminDAO.setRTime(rtime, maxNum);
 	}
 }

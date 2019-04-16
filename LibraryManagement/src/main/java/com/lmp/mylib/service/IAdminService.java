@@ -18,5 +18,5 @@ public interface IAdminService {
 	List<Ride> showRideInfo();
 	List<RTime> showRTimeInfo();
 	int deleteRTime();
-	int setRTime(String[] rtime);
+	int setRTime(String[] rtime, int maxNum);
 }

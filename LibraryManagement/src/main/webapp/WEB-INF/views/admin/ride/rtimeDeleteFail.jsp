@@ -8,7 +8,6 @@
 </head>
 <body>
 	<h3>시간 정보 삭제에 실패하였습니다.</h3>
-	<input type="button" value="다시 시도" onClick="location.href='/mylib/resources/setRideTime.html'"><br>
 	<form action="/mylib/admin/goToMngMntPage">
 		<input type="submit" value="관리 페이지로">
 	</form>

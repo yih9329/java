@@ -167,16 +167,25 @@ public class AdminController {
 			return "admin/adminLoginRequest";
 		
 		String[] rtime = request.getParameterValues("rtime");
+		int maxNum = Integer.parseInt(request.getParameter("maxNum"));
 		int res = service.deleteRTime();
-		if(res == 0)
-			return "admin/ride/rtimeDeleteFail";
-		if(rtime.length != 0) {
-			res = service.setRTime(rtime);
-			if(res != rtime.length) {
-				service.deleteRTime();
-				return "admin/ride/rtimeSetFail";
-			}
+		
+		if(rtime == null)
+			return "admin/ride/rtimeDeleteSuccess";
+		res = service.setRTime(rtime, maxNum);
+		if(res != rtime.length) {
+			service.deleteRTime();
+			return "admin/ride/rtimeSetFail";
 		}
 		return "admin/ride/rtimeSetSuccess";
+	}
+	
+	@RequestMapping("/deleteRideTime")
+	public String deleteRideTime(HttpSession session) {
+		Admin admin = (Admin) session.getAttribute("admin");
+		if(admin == null)
+			return "admin/adminLoginRequest";
+		service.deleteRTime();
+		return "admin/ride/rtimeDeleteSuccess";
 	}
 }

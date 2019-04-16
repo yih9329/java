@@ -19,5 +19,5 @@ public interface IAdminDAO {
 	List<Ride> getRideInfo();
 	List<RTime> getRTimeInfo();
 	int deleteRTime();
-	int setRTime(String[] rtime);
+	int setRTime(String[] rtime, int maxNum);
 }

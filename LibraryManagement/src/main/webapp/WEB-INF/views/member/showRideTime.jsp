@@ -1,4 +1,5 @@
 <%@page import="java.util.List"%>
+<%@page import="com.lmp.mylib.RTime"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
@@ -9,7 +10,7 @@
 </head>
 <body>
 	<%
-		List<String> rtime = (List<String>) request.getAttribute("rtime");
+		List<RTime> rtime = (List<RTime>) request.getAttribute("rtime");
 		if(rtime.size() == 0) {
 	%>
 		<h3>차량 운행 예정이 없습니다.</h3>	
