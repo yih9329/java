@@ -4,11 +4,12 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>회원 로그인 요구</title>
+<title>차량 신청 내역 없음</title>
 </head>
 <body>
-	<h3>로그인이 필요합니다.</h3>
-	<input type="button" value="메인으로" onClick="location.href='/mylib/resources/main.html'">&nbsp;
-	<input type="button" value="회원 로그인" onClick="location.href='/mylib/resources/memberLogin.html'">
+	차량 신청 내역이 없습니다.<br>
+	<form action="/mylib/member/goToMngMntPage">
+		<input type="submit" value="확인">
+	</form> 
 </body>
 </html>

@@ -31,20 +31,38 @@
 	<% 
 			for(int i=0; i<rtimeInfo.size(); i++){
 				String posTime = rtimeInfo.get(i).getPosTime();
+				int cnt = 0;
+				boolean first = true;
+				for(int j=0; j<rideInfo.size(); j++){
+					String appTime = rideInfo.get(j).getPosTime();
+					if(posTime.equals(appTime))
+						cnt++;
+				}
 	%>	
 			<tr>
-				<td><%=posTime%></td>
+				<td rowspan="<%=cnt%>"><%=posTime%></td>
 	<% 			for(int j=0; j<rideInfo.size(); j++){
-					String appTime = rideInfo.get(i).getPosTime();
+					String appTime = rideInfo.get(j).getPosTime();
 					if(posTime.equals(appTime)){
-						String memName = rideInfo.get(i).getMemName();
-						String memAddress = rideInfo.get(i).getMemAddress();
+						String memName = rideInfo.get(j).getMemName();
+						String memAddress = rideInfo.get(j).getMemAddress();
+						if(first){
 	%>
-						<td><%=memName%></td>
-						<td><%=memAddress%></td>
-	<% 				}
-					
-				}
+							<td><%=memName%></td>
+							<td><%=memAddress%></td>		
+	<% 					
+							first = false;
+						}
+						else {
+	%>
+							<tr>
+								<td><%=memName%></td>
+								<td><%=memAddress%></td>
+							</tr>		
+	<%
+						}
+					}
+				}	
 	%>
 			</tr>
 	<%

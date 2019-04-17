@@ -4,11 +4,10 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>회원 로그인 요구</title>
+<title>차량 신청 성공</title>
 </head>
 <body>
-	<h3>로그인이 필요합니다.</h3>
-	<input type="button" value="메인으로" onClick="location.href='/mylib/resources/main.html'">&nbsp;
-	<input type="button" value="회원 로그인" onClick="location.href='/mylib/resources/memberLogin.html'">
-</body>
+	<h3>차량이 신청되었습니다.</h3>
+	<input type="button" value="작업 창" onClick="location.href='/mylib/member/goToMngMntPage'">&nbsp;
+	<input type="button" value="로그아웃" onClick="location.href='/mylib/member/logout'"></body>
 </html>

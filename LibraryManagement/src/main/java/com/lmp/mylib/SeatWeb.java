@@ -1,6 +1,8 @@
 package com.lmp.mylib;
 
-public class Seat {
+import java.io.UnsupportedEncodingException;
+
+public class SeatWeb {
 	private int seatNum;
 	private String memName;
 	private String memPassword;
@@ -15,7 +17,11 @@ public class Seat {
 		return memName;
 	}
 	public void setMemName(String memName) {
-		this.memName =memName;
+		try {
+			this.memName = new String(memName.getBytes("8859_1"), "UTF-8");
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}
 	}
 	public String getMemPassword() {
 		return memPassword;
