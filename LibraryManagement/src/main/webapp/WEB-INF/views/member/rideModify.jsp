@@ -6,29 +6,16 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>차량 운행 시간</title>
+<title>차량 신청 시간 변경</title>
 </head>
 <body>
 	<%
 		List<RTime> rtime = (List<RTime>) request.getAttribute("rtime");
-		if(rtime.size() == 0) {
+		List<Integer> rideNum = (List<Integer>) request.getAttribute("rideNum");
+		String curTime = (String) request.getAttribute("curTime");
 	%>
-			<h3>차량 운행 예정이 없습니다.</h3>	
-			<form action="/mylib/member/logout">
-				<input type="submit" value="로그아웃">
-			</form>
-			<form action="/mylib/member/goToMngMntPage">
-				<input type="submit" value="작업 선택">
-			</form>
-	<%
-		}
-		
-		else {
-			List<Integer> rideNum = (List<Integer>) request.getAttribute("rideNum");
-			int seatNum = (int) request.getAttribute("seatNum");
-
-	%>
-		<h3>원하는 시간을 선택하세요</h3>
+		<h3>변경 시간을 선택하세요</h3>
+		<p>현재 신청 시간 : <%=curTime%></p>
 		<table border="1" style="text-align:center">
 			<tr>
 				<td>시간</td>
@@ -40,7 +27,7 @@
 				String time = rtime.get(i).getPosTime();
 				int maxNum = rtime.get(i).getMaxNum();
 				int curNum = rideNum.get(i);
-				if(curNum == maxNum){
+				if(curNum == maxNum || curTime.equals(time)){
 	%>
 					<tr>
 						<td><%=time%></td>
@@ -52,7 +39,7 @@
 				else {
 	%>
 					<tr>
-						<td><a href="/mylib/member/applyRide?&time=<%=time%>"><%=time%></a></td>
+						<td><a href="/mylib/member/modifyRide?newTime=<%=time%>"><%=time%></a></td>
 						<td><%=curNum%></td>
 						<td><%=maxNum%></td>
 					</tr>
@@ -61,9 +48,5 @@
 			}
 	%>
 		</table>
-	<%
-		}
-	%>
-	
 </body>
 </html>

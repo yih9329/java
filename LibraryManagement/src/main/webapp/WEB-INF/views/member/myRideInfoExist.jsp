@@ -12,8 +12,9 @@
 	%>
 	
 	신청 시간 : <%=rtime%><br>
-	<form action="/mylib/member/goToMngMntPage">
-		<input type="submit" value="확인">
-	</form> 
+	<input type="button" value="시간 변경" onClick="location.href='/mylib/member/modifyMyRideInfo'">&nbsp;
+	<input type="button" value="차량 취소" onClick="location.href='/mylib/member/deleteMyRideInfo'"><br>
+	<input type="button" value="확인" onClick="location.href='/mylib/member/goToMngMntPage'">
+	
 </body>
 </html>

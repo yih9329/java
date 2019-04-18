@@ -4,13 +4,11 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>차량 신청 내역 없음</title>
+<title>차량 취소 실패</title>
 </head>
 <body>
-	차량 신청 내역이 없습니다.<br>
-	<input type="button" value="차량 신청" onClick="location.href='/mylib/member/showRideTime'"><br>
-	<form action="/mylib/member/goToMngMntPage">
-		<input type="submit" value="확인">
-	</form> 
+	<h3>차량 취소에 실패하였습니다.</h3>
+	<input type="button" value="작업 창" onClick="location.href='/mylib/member/goToMngMntPage'">&nbsp;
+	<input type="button" value="로그아웃" onClick="location.href='/mylib/member/logout'">
 </body>
 </html>

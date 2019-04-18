@@ -43,4 +43,9 @@ public class MemberService implements IMemberService {
 		return memberDAO.getMyRideTime(seatNum);
 	}
 
+	@Override
+	public int deleteRide(int seatNum) {
+		return memberDAO.rideDelete(seatNum);
+	}
+
 }

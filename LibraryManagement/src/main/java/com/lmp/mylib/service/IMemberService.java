@@ -10,6 +10,7 @@ public interface IMemberService {
 	List<RTime> showRideTime();
 	List<Integer> showRideNum(List<RTime> rtime);
 	int applyRide(int seatNum, String rtime);
+	int deleteRide(int seatNum);
 	String showMyRideTime(int seatNum);
 }
 

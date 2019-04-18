@@ -80,7 +80,7 @@ public class MemberController {
 			return "member/memberLoginRequest";
 		
 		String rtime = request.getParameter("time");
-		int seatNum = Integer.parseInt(request.getParameter("seatNum"));
+		int seatNum = seat.getSeatNum();
 		int res = service.applyRide(seatNum, rtime);
 		
 		if(res == 0) 
@@ -103,12 +103,49 @@ public class MemberController {
 	}
 	
 	@RequestMapping("/modifyMyRideInfo")
-	public String modifyMyRideInfo(HttpSession session) {
+	public String modifyMyRideInfo(Model model, HttpSession session) {
 		SeatWeb seat = (SeatWeb) session.getAttribute("member");
 		if(seat == null)
 			return "member/memberLoginRequest";
 		
+		int seatNum = seat.getSeatNum();
+		String curTime = service.showMyRideTime(seatNum);
+		List<RTime> rtime = service.showRideTime();
+		List<Integer> rideNum = service.showRideNum(rtime);
+		model.addAttribute("curTime", curTime);
+		model.addAttribute("rtime", rtime);
+		model.addAttribute("rideNum", rideNum);
+		return "member/rideModify";
+	}
+	
+	@RequestMapping("/modifyRide")
+	public String modifyRide(HttpServletRequest request) {
+		HttpSession session = request.getSession();
+		SeatWeb seat = (SeatWeb) session.getAttribute("member");
+		if(seat == null)
+			return "member/memberLoginRequest";
 		
+		String newTime = request.getParameter("newTime");
+		int seatNum = seat.getSeatNum();
+		int res = service.deleteRide(seatNum);
+		if(res == 0)
+			return "member/rideDeleteFail";
+		res = service.applyRide(seatNum, newTime);
+		if(res == 0)
+			return "member/rideApplyFail";
+		return "member/rideModifySuccess";
+	}
+	
+	@RequestMapping("/deleteMyRideInfo")
+	public String deleteMyRideInfo(HttpSession session) {
+		SeatWeb seat = (SeatWeb) session.getAttribute("member");
+		if(seat == null)
+			return "member/memberLoginRequest";
+		int seatNum = seat.getSeatNum();
+		int res = service.deleteRide(seatNum);
+		if(res == 0)
+			return "member/rideDeleteFail";
+		return "member/rideDeleteSuccess";
 	}
 	
 }
