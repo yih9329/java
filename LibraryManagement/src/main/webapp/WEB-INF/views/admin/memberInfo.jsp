@@ -30,6 +30,7 @@
 		변경 비밀번호 : <input type="password" name="memPassword" value="<%=memPassword%>" style="width:80px"><br>
 		<input type="submit" value="수정">&nbsp;
 	</form>
-	<input type="button" value="삭제" onClick="location.href='/mylib/admin/delete?seatNum=<%=seatNum%>'">
+	<input type="button" value="삭제" onClick="location.href='/mylib/admin/delete?seatNum=<%=seatNum%>'">&nbsp;
+	<input type="button" value="좌석이동" onClick="location.href='/mylib/admin/selectSeat?seatNum=<%=seatNum%>'">
 </body>
 </html>

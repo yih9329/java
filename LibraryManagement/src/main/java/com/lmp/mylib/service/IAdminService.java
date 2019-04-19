@@ -11,6 +11,7 @@ import com.lmp.mylib.Seat;
 public interface IAdminService {
 	boolean isAdmin(String adminId, String adminPw);
 	int registerMember(MemberWeb member, int seatNum);
+	int moveSeat(int curSeatNum, int newSeatNum);
 	int deleteMember(int seatNum);
 	int modifyMemInfo(MemberWeb member, String curMemPw);
 	List<Seat> showSeatInfo();

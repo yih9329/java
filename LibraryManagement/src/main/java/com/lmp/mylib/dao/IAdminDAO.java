@@ -12,6 +12,7 @@ public interface IAdminDAO {
 	boolean getAdminId(String reqId, String reqPw);
 	int insertMember(MemberWeb member);
 	int registerSeat(MemberWeb member, int seatNum);
+	int moveSeat(int curSeatNum, int newSeatNum);
 	int deleteMember(int seatNum);
 	int updateMemInfo(MemberWeb member, String curMemPw);
 	List<Seat> getSeatInfo();

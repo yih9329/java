@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<beans:beans xmlns="http://www.springframework.org/schema/mvc"
+<beans xmlns="http://www.springframework.org/schema/mvc"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:tx="http://www.springframework.org/schema/tx"
 	xmlns:beans="http://www.springframework.org/schema/beans"
 	xmlns:context="http://www.springframework.org/schema/context"
 	xsi:schemaLocation="http://www.springframework.org/schema/mvc https://www.springframework.org/schema/mvc/spring-mvc.xsd
 		http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/tx https://www.springframework.org/schema/tx/spring-tx.xsd
 		http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd">
-
+		
 	<!-- DispatcherServlet Context: defines this servlet's request-processing infrastructure -->
 	
 	<!-- Enables the Spring MVC @Controller programming model -->
@@ -16,23 +18,27 @@
 	<resources mapping="/resources/**" location="/resources/" />
 
 	<!-- Resolves views selected for rendering by @Controllers to .jsp resources in the /WEB-INF/views directory -->
-	<beans:bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
-		<beans:property name="prefix" value="/WEB-INF/views/" />
-		<beans:property name="suffix" value=".jsp" />
-	</beans:bean>
+	<bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="prefix" value="/WEB-INF/views/" />
+		<property name="suffix" value=".jsp" />
+	</bean>
 	
-	<beans:bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
-	    <beans:property name="driverClass" value="oracle.jdbc.driver.OracleDriver"></beans:property>
-	    <beans:property name="jdbcUrl" value="jdbc:oracle:thin:@localhost:1521:xe"></beans:property>
-	    <beans:property name="user" value="scott"></beans:property>
-	    <beans:property name="password" value="tiger"></beans:property>
-	    <beans:property name="maxPoolSize" value="200"></beans:property>
-	    <beans:property name="checkoutTimeout" value="60000"></beans:property>
-	    <beans:property name="maxIdleTime" value="1800"></beans:property>
-	    <beans:property name="idleConnectionTestPeriod" value="600"></beans:property>
-	</beans:bean>
+	<bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
+	    <property name="driverClass" value="oracle.jdbc.driver.OracleDriver" />
+	    <property name="jdbcUrl" value="jdbc:oracle:thin:@localhost:1521:xe" />
+	    <property name="user" value="scott" />
+	    <property name="password" value="tiger" />
+	    <property name="maxPoolSize" value="200" />
+	    <property name="checkoutTimeout" value="60000" />
+	    <property name="maxIdleTime" value="1800" />
+	    <property name="idleConnectionTestPeriod" value="600" />
+	</bean>
+	
+	<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+	    <property name="dataSource" ref="dataSource" />
+	</bean>
+	
+	<tx:annotaion-driven transaction-manager="transactionManager"/>
 	<context:component-scan base-package="com.lmp.mylib" />
-	
-	
-	
-</beans:beans>
+
+</beans>

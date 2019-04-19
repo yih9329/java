@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.lmp.mylib.MemberDB;
 import com.lmp.mylib.MemberWeb;
@@ -13,6 +14,7 @@ import com.lmp.mylib.Seat;
 import com.lmp.mylib.dao.AdminDAO;
 
 @Service
+@Transactional
 public class AdminService implements IAdminService{
 
 	@Autowired
@@ -30,7 +32,12 @@ public class AdminService implements IAdminService{
 			res = adminDAO.registerSeat(member, seatNum);
 		return res;
 	}
-
+	
+	@Override
+	public int moveSeat(int curSeatNum, int newSeatNum) {
+		return adminDAO.moveSeat(curSeatNum, newSeatNum);
+	}
+	
 	@Override
 	public int deleteMember(int seatNum) {
 		return adminDAO.deleteMember(seatNum);

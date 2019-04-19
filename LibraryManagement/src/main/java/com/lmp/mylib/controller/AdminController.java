@@ -124,6 +124,33 @@ public class AdminController {
 			return "admin/memberDeleteFail";
 	}
 	
+	@RequestMapping("/selectSeat")
+	public String selectSeat(Model model, HttpServletRequest request) {
+		HttpSession session = request.getSession();
+		Admin admin = (Admin) session.getAttribute("admin");
+		if(admin == null)
+			return "admin/adminLoginRequest";
+		List<Seat> seat = service.showSeatInfo();
+		int curSeatNum = Integer.parseInt(request.getParameter("seatNum"));
+		model.addAttribute("seatList", seat);
+		model.addAttribute("curSeatNum", curSeatNum);
+		return "admin/selectNewSeat";
+	}
+	
+	@RequestMapping("/moveSeat")
+	public String moveSeat(HttpServletRequest request) {
+		HttpSession session = request.getSession();
+		Admin admin = (Admin) session.getAttribute("admin");
+		if(admin == null)
+			return "admin/adminLoginRequest";
+		int curSeatNum = Integer.parseInt(request.getParameter("curSeatNum"));
+		int newSeatNum = Integer.parseInt(request.getParameter("newSeatNum"));
+		int res = service.moveSeat(curSeatNum, newSeatNum);
+		if(res != 2)
+			return "admin/moveSeatFail";
+		return "admin/moveSeatSuccess";
+	}
+	
 	@RequestMapping(value="/modify", method=RequestMethod.POST)
 	public String modifyMemInfo(MemberWeb member, HttpServletRequest request) {
 		HttpSession session = request.getSession();
