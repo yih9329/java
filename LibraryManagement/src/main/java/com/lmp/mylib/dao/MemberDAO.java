@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementSetter;
 import org.springframework.jdbc.core.RowMapper;
@@ -115,7 +116,7 @@ public class MemberDAO implements IMemberDAO {
 	}
 	
 	@Override
-	public int rideInsert(final int seatNum, final String rtime) {
+	public int rideInsert(final int seatNum, final String rtime) throws DataAccessException {
 		String sql = "INSERT INTO ride VALUES(?, ?)";
 		int res = 0;
 		res = template.update(sql, new PreparedStatementSetter() {
@@ -150,7 +151,7 @@ public class MemberDAO implements IMemberDAO {
 	}
 
 	@Override
-	public int rideDelete(final int seatNum) {
+	public int rideDelete(final int seatNum) throws DataAccessException {
 		String sql = "DELETE FROM ride WHERE s_num=?";
 		int res = 0;
 		res = template.update(sql, new PreparedStatementSetter() {

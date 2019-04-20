@@ -3,6 +3,7 @@ package com.lmp.mylib.service;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,20 +28,37 @@ public class AdminService implements IAdminService{
 
 	@Override
 	public int registerMember(MemberWeb member, int seatNum) {
-		int res = adminDAO.insertMember(member);
-		if(res == 1) 
-			res = adminDAO.registerSeat(member, seatNum);
+		int res = 0;
+		try {
+			res = adminDAO.insertMember(member);
+			if(res == 1) 
+				res = adminDAO.registerSeat(member, seatNum);
+		} catch (DataAccessException e) {
+			e.printStackTrace();
+		} 
 		return res;
 	}
 	
 	@Override
 	public int moveSeat(int curSeatNum, int newSeatNum) {
-		return adminDAO.moveSeat(curSeatNum, newSeatNum);
+		int res = 0;
+		try {
+			res = adminDAO.moveSeat(curSeatNum, newSeatNum);	
+		} catch (DataAccessException e) {
+			e.printStackTrace();
+		}
+		return res;
 	}
 	
 	@Override
 	public int deleteMember(int seatNum) {
-		return adminDAO.deleteMember(seatNum);
+		int res = 0;
+		try {
+			res = adminDAO.deleteMember(seatNum);	
+		} catch (DataAccessException e) {
+			e.printStackTrace();
+		}
+		return res;
 	}
 
 	@Override
@@ -55,7 +73,13 @@ public class AdminService implements IAdminService{
 
 	@Override
 	public int modifyMemInfo(MemberWeb member, String curMemPw) {
-		return adminDAO.updateMemInfo(member, curMemPw);
+		int res = 0;
+		try {
+			res = adminDAO.updateMemInfo(member, curMemPw);	
+		} catch (DataAccessException e) {
+			e.printStackTrace();
+		}
+		return res;
 	}
 
 	@Override
@@ -70,11 +94,23 @@ public class AdminService implements IAdminService{
 
 	@Override
 	public int deleteRTime() {
-		return adminDAO.deleteRTime();
+		int res = 0;
+		try {
+			res = adminDAO.deleteRTime();	
+		} catch (DataAccessException e) {
+			e.printStackTrace();
+		}
+		return res;
 	}
 
 	@Override
 	public int setRTime(String[] rtime, int maxNum) {
-		return adminDAO.setRTime(rtime, maxNum);
+		int res = 0;
+		try {
+			res = adminDAO.setRTime(rtime, maxNum);	
+		} catch (DataAccessException e) {
+			e.printStackTrace();
+		}
+		return res;
 	}
 }

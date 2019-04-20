@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementSetter;
 import org.springframework.jdbc.core.RowMapper;
@@ -54,7 +55,7 @@ public class AdminDAO implements IAdminDAO {
 	}
 
 	@Override
-	public int insertMember(final MemberWeb member) {
+	public int insertMember(final MemberWeb member) throws DataAccessException {
 		String sql = "INSERT INTO member VALUES (?, ?, ?, ?, ?, ?)";
 		int res = 0;
 		res = template.update(sql, new PreparedStatementSetter() {
@@ -72,7 +73,7 @@ public class AdminDAO implements IAdminDAO {
 	}
 
 	@Override
-	public int registerSeat(final MemberWeb member, final int seatNum) {
+	public int registerSeat(final MemberWeb member, final int seatNum) throws DataAccessException {
 		String sql = "UPDATE seat SET mem_name=?, mem_password=? WHERE s_num=?";
 		int res = 0;
 		res = template.update(sql, new PreparedStatementSetter() {
@@ -87,7 +88,7 @@ public class AdminDAO implements IAdminDAO {
 	}
 	
 	@Override
-	public int moveSeat(final int curSeatNum, final int newSeatNum) {
+	public int moveSeat(final int curSeatNum, final int newSeatNum) throws DataAccessException {
 		String sql = "SELECT mem_name, mem_password FROM seat WHERE s_num=?";
 		List<Seat> mem = null;
 		mem = template.query(sql, new PreparedStatementSetter() {
@@ -130,7 +131,7 @@ public class AdminDAO implements IAdminDAO {
 	}
 	
 	@Override
-	public int deleteMember(final int seatNum) {
+	public int deleteMember(final int seatNum) throws DataAccessException {
 		String sql = "DELETE FROM member WHERE mem_name=(SELECT mem_name FROM seat WHERE s_num=?) AND mem_password=(SELECT mem_password FROM seat WHERE s_num=?)";
 		int res = 0;
 		res = template.update(sql, new PreparedStatementSetter() {
@@ -162,7 +163,7 @@ public class AdminDAO implements IAdminDAO {
 		});
 		return seat;
 	}
-
+	
 	@Override
 	public MemberDB getMemInfo(final int seatNum) {
 		String sql = "SELECT * FROM member WHERE mem_name=(SELECT mem_name FROM seat WHERE s_num=?) AND mem_password=(SELECT mem_password FROM seat WHERE s_num=?)";
@@ -195,7 +196,7 @@ public class AdminDAO implements IAdminDAO {
 	}
 	
 	@Override
-	public int updateMemInfo(final MemberWeb member, final String curMemPw) {
+	public int updateMemInfo(final MemberWeb member, final String curMemPw) throws DataAccessException {
 		String sql = "UPDATE member SET mem_sex=?, mem_age=?, mem_address=?, mem_phone=?, mem_password=? WHERE mem_name=? AND mem_password=?";
 		int res = 0;
 		res = template.update(sql, new PreparedStatementSetter() {
@@ -279,7 +280,7 @@ public class AdminDAO implements IAdminDAO {
 	}
 	
 	@Override
-	public int deleteRTime() {
+	public int deleteRTime() throws DataAccessException{
 		String sql = "DELETE FROM rtime";
 		int res = 0;
 		res = template.update(sql);
@@ -287,7 +288,7 @@ public class AdminDAO implements IAdminDAO {
 	}
 
 	@Override
-	public int setRTime(String[] rtime, final int maxNum) {
+	public int setRTime(String[] rtime, final int maxNum) throws DataAccessException{
 		String sql = "INSERT INTO rtime VALUES(?, ?)";
 		int res = 0;
 		for(int i=0; i<rtime.length; i++) {
@@ -302,6 +303,4 @@ public class AdminDAO implements IAdminDAO {
 		}
 		return res;
 	}
-
-	
 }

@@ -3,12 +3,15 @@ package com.lmp.mylib.service;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.lmp.mylib.RTime;
 import com.lmp.mylib.dao.MemberDAO;
 
 @Service
+@Transactional
 public class MemberService implements IMemberService {
 	@Autowired
 	MemberDAO memberDAO;
@@ -35,9 +38,15 @@ public class MemberService implements IMemberService {
 
 	@Override
 	public int applyRide(int seatNum, String rtime) {
-		return memberDAO.rideInsert(seatNum, rtime);
+		int res = 0;
+		try {
+			res = memberDAO.rideInsert(seatNum, rtime);	
+		} catch (DataAccessException e) {
+			e.printStackTrace();
+		}		
+		return res;
 	}
-
+	
 	@Override
 	public String showMyRideTime(int seatNum) {
 		return memberDAO.getMyRideTime(seatNum);
@@ -45,7 +54,13 @@ public class MemberService implements IMemberService {
 
 	@Override
 	public int deleteRide(int seatNum) {
-		return memberDAO.rideDelete(seatNum);
+		int res = 0;
+		try {
+			res = memberDAO.rideDelete(seatNum);	
+		} catch (DataAccessException e) {
+			e.printStackTrace();
+		}
+		return res;
 	}
 
 }
