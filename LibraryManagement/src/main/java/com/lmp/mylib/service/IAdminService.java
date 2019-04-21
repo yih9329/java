@@ -20,4 +20,5 @@ public interface IAdminService {
 	List<RTime> showRTimeInfo();
 	int deleteRTime();
 	int setRTime(String[] rtime, int maxNum);
+	void deleteRTimeAuto();
 }

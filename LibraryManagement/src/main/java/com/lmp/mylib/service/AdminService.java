@@ -1,9 +1,18 @@
 package com.lmp.mylib.service;
 
+import java.io.IOException;
+import java.nio.ByteBuffer;
+import java.nio.channels.FileChannel;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
+import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -86,7 +95,7 @@ public class AdminService implements IAdminService{
 	public List<Ride> showRideInfo() {
 		return adminDAO.getRideInfo();
 	}
-
+	
 	@Override
 	public List<RTime> showRTimeInfo() {
 		return adminDAO.getRTimeInfo();
@@ -102,7 +111,7 @@ public class AdminService implements IAdminService{
 		}
 		return res;
 	}
-
+	
 	@Override
 	public int setRTime(String[] rtime, int maxNum) {
 		int res = 0;
@@ -113,4 +122,45 @@ public class AdminService implements IAdminService{
 		}
 		return res;
 	}
+
+	@Override
+	@Scheduled(cron="0/50 * * * * ?")
+	public void deleteRTimeAuto() {
+		List<Ride> rideInfo = adminDAO.getRideInfo();
+		List<RTime> rtimeInfo = adminDAO.getRTimeInfo();
+		LocalDate date = LocalDate.now();
+		Path fp = Paths.get("C:\\Users\\user\\Desktop\\운행정보\\" + date + ".txt");		
+		try {
+			Files.deleteIfExists(fp);
+			fp = Files.createFile(fp);
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		}
+		try {
+			if(rtimeInfo.size() == 0)
+				Files.write(fp, "운행 휴무일입니다.".getBytes(), StandardOpenOption.APPEND);
+			
+			else {
+				for(int i=0; i<rtimeInfo.size(); i++) {
+					String time = rtimeInfo.get(i).getPosTime();
+					Files.write(fp, (new String(time) + '\t').getBytes(), StandardOpenOption.APPEND);
+					for(int j=0; j<rideInfo.size(); j++) {
+						Ride r = rideInfo.get(j);
+						if(time.equals(r.getPosTime())) {
+							String name = r.getMemName();
+							Files.write(fp, (new String(name)+' ').getBytes(), StandardOpenOption.APPEND);
+						}
+					}
+					
+					Files.write(fp, (System.lineSeparator()).getBytes(), StandardOpenOption.APPEND);
+				}
+			}
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		adminDAO.deleteRTime();
+		System.out.println("운행 정보 초기화");
+	}
+	
 }

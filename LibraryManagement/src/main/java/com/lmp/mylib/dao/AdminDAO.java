@@ -126,6 +126,15 @@ public class AdminDAO implements IAdminDAO {
 				pstmt.setInt(3, newSeatNum);
 			}
 		});
+		
+		sql = "UPDATE ride SET s_num=? WHERE s_num=?";
+		template.update(sql, new PreparedStatementSetter() {
+			@Override
+			public void setValues(PreparedStatement pstmt) throws SQLException {
+				pstmt.setInt(1, newSeatNum);
+				pstmt.setInt(2, curSeatNum);
+			}
+		});
 	
 		return res;
 	}
