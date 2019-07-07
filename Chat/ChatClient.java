@@ -102,6 +102,10 @@ public class Exam03_ChatClient extends Application {
 	}
 
 	public static void main(String[] args) {
+		asdfasfdafdsafdasf
+				asdfsafasdfdas
+				asdfsdafsfsdaf
+						asdfadsfsdafs
 		launch();
 	}
 
